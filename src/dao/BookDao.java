@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import conn.DBConnection;
+import common.DBConnection;
 import model.BookBean;
 
 public class BookDao {

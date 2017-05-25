@@ -10,7 +10,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="D:/apache-tomcat-8.0.41/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="D:/apache-tomcat-8.0.41/lib/jspSmartUpload.jar"/>
-	<classpathentry kind="lib" path="J:/jsp/JSTL需要的jar包/jstl-1.2.jar"/>
-	<classpathentry kind="lib" path="J:/jsp/JSTL需要的jar包/standard-1.1.2.jar"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-8.0.41/lib/jstl-1.2.jar"/>
+	<classpathentry kind="lib" path="D:/apache-tomcat-8.0.41/lib/standard-1.1.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
