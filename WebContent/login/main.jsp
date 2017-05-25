@@ -236,7 +236,7 @@ function logOut(){
 					<ul class="submenu">
 						<li><a href="../ShowBookServlet" target="main">信息显示</a></li>
 						<li><a href="../BookManager/addNewBook.jsp" target="main">图书添加</a></li>
-						<li><a href="../BookManager/selectBook.jsp" target="main">图书查询</a></li>
+						<li><a href="../BookManager/selectBook.jsp" target="main">图书查询TIANJIAHAHA</a></li>
 					</ul>
 				</li>
 				<li>
