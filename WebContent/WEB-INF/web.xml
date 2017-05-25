@@ -89,6 +89,30 @@
   	<servlet-name>DeleteBorrowServlet</servlet-name>
   	<url-pattern>/DeleteBorrowServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>AddBookServlet</servlet-name>
+    <servlet-class>action.AddBookServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ShowBookServlet</servlet-name>
+    <servlet-class>action.ShowBookServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SelectBookServlet</servlet-name>
+    <servlet-class>action.SelectBookServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddBookServlet</servlet-name>
+    <url-pattern>/AddBookServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ShowBookServlet</servlet-name>
+    <url-pattern>/ShowBookServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SelectBookServlet</servlet-name>
+    <url-pattern>/SelectBookServlet</url-pattern>
+  </servlet-mapping>
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
