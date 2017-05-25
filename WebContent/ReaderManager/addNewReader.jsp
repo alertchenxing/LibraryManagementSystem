@@ -193,7 +193,7 @@
 			}
 		}
 		if(maxnum != null || maxnum != ""){
-			if(isNaN(maxnum) || maxnum < 0 || maxnum > 10){
+			if(isNaN(maxnum) || maxnum < 0 || maxnum > 10 ){
 				$("p").eq(7).append("<label class='message'>请输入0-10的数字</label>");
 				flag++;
 			}

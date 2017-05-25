@@ -8,8 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBConnection {
-	private static final String URL = "jdbc:oracle:thin:@localhost:1521:DBDAO";
-	private static final String USERNAME = "LMS";
+	private static final String URL = "jdbc:oracle:thin:@localhost:1521:scott";
+	private static final String USERNAME = "C##LMS";
 	private static final String PASSWORD = "LMS";
 	
 	static{
