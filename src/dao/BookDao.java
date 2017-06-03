@@ -232,5 +232,50 @@ public class BookDao {
 		}
 		return flag;
 	}
+	/**
+	 * 验证图书是否可借
+	 * @param 要验证的图书编号
+	 * @return 可借返回大于1的值，不可借返回0
+	 * */
+	public int checkBorrow(String booknum){
+		int num = 0;
+		conn = DBConnection.getConnection();
+		String sql = "select num - b_num from tb_bookinfo where booknum='"+booknum+"'";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				num = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeConnection(rs, pstmt, conn);
+		}
+		return num;
+	}
+	/**
+	 * 借阅之后修改图书信息中的可借图书数量
+	 * @param 所要修改的图书编号
+	 * @return 失败返回false，成功返回true
+	 * **/
+	public boolean updateBnum(String booknum) {
+		boolean flag = false;
+		conn = DBConnection.getConnection();
+		String sql = "update tb_bookinfo set b_num = "
+				+ "(select count(*) from tb_borrow where "
+				+ "booknum='"+booknum+"' and flag = '0') where booknum='"+booknum+"'";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			if (pstmt.executeUpdate() > 0) {
+				flag = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeConnection(rs, pstmt, conn);
+		}
+		return flag;
+	}
 }
 

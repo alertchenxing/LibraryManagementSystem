@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+*{
+	margin: 0;
+	padding: 0;
+}
+.box{
+	position:relative;
+	height:400px;
+	width:100%;
+	background-color:#F8F8F8;
+}
+.button{
+	padding: 8px 16px 7px 16px;
+	background-color:#99CC99;
+	border:0px;
+	font-size:15px;
+	transition:background-color .3s;/*颜色渐变*/
+	-webkit-transition:background-color .3s;
+	-o-transition:background-color .3s;
+}
+.button:hover{
+	background-color: #99CCCC;
+}
+.buttons{
+	position:absolute;
+	right:10px;
+	bottom:10px;
+}
+.select{
+	position:relative;
+	top:150px;
+}
+#strkey{
+	font-size:16px;
+	padding: 4px 8px;
+}
+.warn{
+	position:absolute;
+	font-size:20px;
+	margin:40px;
+}
+.hidden{
+	display:none;
+}

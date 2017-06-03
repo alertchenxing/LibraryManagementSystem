@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+.pagination{
+	display:inline-block;
+}
+.pagination li{
+	display:inline;
+}
+.pagination li a{
+	text-align:center;
+	color:black;
+	padding: 8px 16px;
+	text-decoration:none;/*去掉下划线*/
+	transition:background-color .3s;/*颜色渐变*/
+	-webkit-transition:background-color .3s;
+	-o-transition:background-color .3s;
+}
+.pagination li a.active{
+	background-color:#99CC99;
+	color:white;
+}
+.pagination li a:hover:not(.active){
+	background-color: #99CCCC;
+}
+#info{
+	padding: 8px 16px;
+	background-color:#F0F0F0;
+}
+#page{
+	text-align:center;
+	position:relative;
+	top:20px;
+}
+form{
+	display:inline;
+}
+table{
+	border-collapse:collapse;/*合并边框*/
+	width:100%;
+}
+th{
+	background-color:#99CC99;
+	height:40px;
+		
+}
+td, th{
+	text-align:center;
+	border:1px solid #99CC66;
+	width:20%;
+}
+td{
+	height:30px;
+}
+#text{
+	height:28px;
+	text-align:center;
+	font-size:16px;
+}

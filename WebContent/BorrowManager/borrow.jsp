@@ -1,5 +1,7 @@
+<%@page import="model.AdminBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page  import="java.util.*" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -8,38 +10,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>图书借阅</title>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/infoadd.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
-		text-align:center;
-	}
-	h1{
-		background-color:#99CC99;
-		font-size: 25px;
-		text-align:left;
-		padding: 10px 0px 10px 60px;
-		display: block;
-		border-bottom:1px solid #89AF4C;
-		color: #FFF;
-	}
-	input, select{
-		font-size:16px;	
-		padding: 4px 8px;
-	}
-	p{
-		padding: 10px 10px 10px 60px;
-	}
-	span{
-		font-size: 14px;
-		color: #FFF;
-	}
+	.hidden{
+			display:none;
+		}
 	.info1{
 		position:relative;
 		width:40%;
@@ -52,33 +29,6 @@
 		float:left;
 		text-align:left;
 	}
-	.buttons{
-		position:absolute;
-		bottom:10px;
-		right:10px;
-	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	.buttons{
-		position:absolute;
-		right:10px;
-		bottom:10px;
-	}
-	span{
-		font-size: 14px;
-		color: #FFF;
-	}
-	
 	#borrows-table{
 		width:99%;
 		border-collapse:collapse;
@@ -102,8 +52,32 @@
 	}
 	
 </style>
+<script src="../jquery/table.js"></script>
 <script type="text/javascript">
 	var xmlhttp;
+	var clickedRow;
+	function trclickofBorrow(obj){
+		if(clickedRow != null){
+			clickedRow.style.background="#F8F8F8";
+		}
+		obj.style.background="#D8D8D8";
+		clickedRow = obj;
+		var bid = clickedRow.cells[4].innerHTML;
+		if(bid != ""){
+			window.location.href="../SelectOneBorrowServlet?bid="+bid;
+		}
+		
+	}
+	function trhover(obj){
+		if(obj != clickedRow){
+			obj.style.background="#F0F0F0";
+		}
+	}
+	function trout(obj){
+		if(obj != clickedRow){
+			obj.style.background="#F8F8F8";
+		}
+	}
 	function showReader(){
 		clearContents();
 		var readerid = document.getElementById("readerid").value;
@@ -130,7 +104,17 @@
 	function BookDao(){
 		if(xmlhttp.readyState==4 && xmlhttp.status==200){
 			var result = xmlhttp.responseText;
-			alert(result);
+			if(result == 0){
+				alert("该图书不存在！");
+			}else{
+				var json = eval("("+result+")");
+				document.getElementById("bookname").value = json.bookName;
+				document.getElementById("booktype").value = json.bookType;
+				var flag = json.numb - json.b_numb;
+				if(flag <= 0){
+					alert("该图书已达到最大借书数量！不可再借！");
+				}
+			}
 		}
 	}
 	function readerDao(){
@@ -139,7 +123,6 @@
 			if(result == 1){
 				alert("读者不存在！");
 			}else{
-				var num = document.getElementById("maxnum").value;
 				var json = eval("("+result+")");
 				document.getElementById("readername").value = json.readerName;
 				var size;
@@ -154,6 +137,7 @@
 						tb.rows[i+1].cells[1].innerHTML = json.borrows[i].bookName;
 						tb.rows[i+1].cells[2].innerHTML = json.borrows[i].borrowDate;
 						tb.rows[i+1].cells[3].innerHTML = json.borrows[i].shouldDate;
+						tb.rows[i+1].cells[4].innerHTML = json.borrows[i].bid;
 					}
 				}
 			}
@@ -199,8 +183,20 @@
 		if(bookname == ""){
 			return;
 		}else{
-			var id = document.getElementById("booknum").value
-			window.location.href="url";
+			var booknum = document.getElementById("booknum").value
+			window.location.href="../SelectBookServlet?strkey="+booknum;
+		}
+	}
+	function checkInfo(){
+		var readername = document.getElementById("readername").value;
+		var bookname = document.getElementById("bookname").value;
+		if(readername == ""){
+			alert("请输入正确的读者证件号！");
+			return false;
+		}
+		if(bookname == ""){
+			alert("请输入正确的图书编号！");
+			return false;
 		}
 	}
 	window.onload = function(){
@@ -210,12 +206,30 @@
 </script>
 </head>
 <body>
-<form action="">
+<%
+	ArrayList<AdminBean> loginrList = new ArrayList<>();
+	loginrList = (ArrayList)session.getAttribute("login");
+	AdminBean aBean = new AdminBean();
+	int flag = 0;
+	String username = null;
+	for(int i = 0; i < loginrList.size(); i++){
+		aBean = (AdminBean)loginrList.get(i);
+		username = aBean.getUsername();
+		flag = aBean.getFlag();
+	}
+%>
+<form action="../AddBorrowServlet" method="post" onsubmit="return checkInfo()">
 <div class="box">
 
 <h1>图书借阅<span>(输入读者证件号和图书编号)</span></h1>
 <div class="info1">
-<p><label for="readerid">读者证件：</label><input name="readerid" id="readerid" type="text" onchange="showReader()"></p>
+<%
+			if(flag == 0){%>
+				<p><label for="readerid">读者证件：</label><input name="readerid" id="readerid" type="text" onchange="showReader()" value="<%=username%>"></p>
+			<%}else{%>
+			<p><label for="readerid">读者证件：</label><input name="readerid" id="readerid" type="text" onchange="showReader()"></p>
+		<%}
+%>
 <p><label for="readername">读者姓名：</label><input name="readername" id="readername" type="text" readonly="readonly" onclick="selectReader(this)"></p>
 <p><label for="maxnum">可借数量：</label><input name="maxnum" id="maxnum" type="text" readonly="readonly"></p>
 <hr>
@@ -232,31 +246,36 @@
 	<th>借阅日期</th>
 	<th>应还日期</th>
 </tr>
-<tr>
+<tr onclick="trclickofBorrow(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
 	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
 	<td></td>
 </tr>
-<tr>
+<tr onclick="trclickofBorrow(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
 	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
 	<td></td>
 	<td></td>
 	<td></td>
 	<td></td>
 </tr>
-<tr>
+<tr onclick="trclickofBorrow(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr onclick="trclickofBorrow(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+	<td></td>
+</tr>
+<tr onclick="trclickofBorrow(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
+	<td></td>
 	<td></td>
 	<td></td>
 	<td></td>

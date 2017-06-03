@@ -3,7 +3,14 @@ package model;
 public class AdminBean {
 	private String username;
 	private String password;
+	int flag;
 	
+	public int getFlag() {
+		return flag;
+	}
+	public void setFlag(int flag) {
+		this.flag = flag;
+	}
 	public String getUsername() {
 		return username;
 	}

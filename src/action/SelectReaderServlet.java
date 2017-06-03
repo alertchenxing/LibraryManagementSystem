@@ -25,7 +25,9 @@ public class SelectReaderServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//设置对客户端请求进行重新编码的编码
 		request.setCharacterEncoding("utf-8");
+		//指定对服务器响应进行重新编码的编码
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 		String strkey = request.getParameter("strkey");

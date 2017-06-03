@@ -41,16 +41,22 @@ public class LoginServlet extends HttpServlet {
 				out.print("用户"+username+"不存在，登录失败！");
 			}else if(flag == 1){
 				out.print("密码错误，登录失败！");
-			}else if(flag == 2){
+			}else if(flag > 1){
 				AdminBean aBean = new AdminBean();
 				aBean.setUsername(username);
 				aBean.setPassword(password);
 				//获取session对象
 				HttpSession session = request.getSession();
 				ArrayList login = new ArrayList();//实例化列表对象
-				login.add(aBean);//个人信息添加到列表中
 				/*把列表保存到session对象中，以便在别的页面获取个人信息*/
-				out.print(1);
+				if (flag == 3) {
+					aBean.setFlag(1);
+					out.print(1);
+				}else if (flag == 2) {
+					aBean.setFlag(0);
+					out.print(2);
+				}
+				login.add(aBean);//个人信息添加到列表中
 				session.setAttribute("login", login);
 				//response.sendRedirect("http://localhost:8080/LibraryManagementSystem/login/main.jsp");
 			}

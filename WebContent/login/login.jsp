@@ -60,7 +60,7 @@
 		height:18px;
 	}
 	#form{
-			height:130px;
+			height:120px;
 		}
 	.button {
    	 	background-color: #A7C942;
@@ -78,6 +78,10 @@
 }
 .button:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+.zhuce{
+	position:relative;	
+	left:200px;
 }
 </style>
 <script type="text/javascript">
@@ -126,6 +130,8 @@
 		    {
 		    	if(xmlhttp.responseText == 1){
 		    		window.location.href='main.jsp';
+		    	}else if(xmlhttp.responseText == 2){
+		    		window.location.href='../StudentManager/main.jsp';
 		    	}else{
 		    		document.getElementById("message").innerHTML=xmlhttp.responseText;
 		    	}
@@ -153,12 +159,15 @@
 									<p id="message"></p>
 								</td>
 							</tr>
+							<tr><td><a href="../StudentManager/register.jsp" target="_top" class="zhuce">学生注册</a></td></tr>
 							<tr>
 								<td>
 									<input type="submit" value="登陆" class="button" onclick="checklogin()">&nbsp;&nbsp;&nbsp;&nbsp;
 									<input type="reset" value="清除" class="button">
 								</td>
 							</tr>
+							
+							
 						</table>	
 		</form></div></center></div>
 <div class="bottom"></div>

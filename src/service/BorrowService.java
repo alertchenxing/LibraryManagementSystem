@@ -1,7 +1,9 @@
 package service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import common.DBConnection;
 import dao.BorrowDao;
 import model.BorrowBean;
 
@@ -16,7 +18,16 @@ public class BorrowService {
 	public boolean addBorrow(BorrowBean borrowBean) {
 		return bDao.doCreate(borrowBean);
 	}
-	
+	/**
+	 * 查询指定图书或读者的所有借阅信息
+	 * @param strkey 所要查找的条件读者证件号或者图书编号
+	 * @return 查找成功返返回装有所有信息的列表
+	 */
+	public ArrayList<BorrowBean> selectBykey(String strkey){
+		ArrayList<BorrowBean> bList = new ArrayList<>();
+		bList = bDao.selectBykey(strkey);
+		return bList;
+	}
 	/**
 	 * 查询指定读者的借阅信息
 	 * @param readerid要查询读者的证件号
@@ -38,12 +49,11 @@ public class BorrowService {
 	
 	/**
 	 * 删除指定一条借阅信息
-	 * @param readerid要删除借阅信息的读者证件号
-	 * @param booknum要删除借阅信息的图书编号
+	 * @param bid要删除借阅信息主键ID
 	 * @return 删除成功返回TRUE失败返回FALSE
 	 */
-	public boolean removeBorrow(String readerid, String booknum) {
-		return bDao.doDelete(readerid, booknum);
+	public boolean removeBorrow(int bid) {
+		return bDao.doDelete(bid);
 	}
 	
 	/**
@@ -54,5 +64,16 @@ public class BorrowService {
 	 */
 	public boolean verifyBorrow(String readerid, String booknum) {
 		return bDao.doCheck(readerid, booknum);
+	}
+	/**
+	 * 查询指定一条借阅信息
+	 * @param bid要查询借阅信息的主键
+	 * @return 存在返回TRUE不存在返回FALSE
+	 */
+	public BorrowBean selectOneBorrow(int bid){
+		return bDao.selectOneBorrow(bid);
+	}
+	public boolean xujie(BorrowBean borrowBean) {
+		return bDao.xujie(borrowBean);
 	}
 }

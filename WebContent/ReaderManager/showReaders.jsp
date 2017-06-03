@@ -8,129 +8,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>读者信息显示</title>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/fenye.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
+<script src="../jquery/table.js" ></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
-	}
-	table{
-		border-collapse:collapse;/*合并边框*/
-		width:100%;
-	}
-	th{
-		background-color:#99CC99;
-		height:40px;
-		
-	}
-	td, th{
-		text-align:center;
-		border:1px solid #99CC66;
-		width:20%;
-	}
-	td{
-		height:30px;
-	}
 	.tel{
 		width:40%;
-	}
-	.pagination{
-		display:inline-block;
-	}
-	#info{
-		padding: 8px 16px;
-		background-color:#F0F0F0;
-	}
-	.pagination li{
-		display:inline;
-	}
-	.pagination li a{
-		text-align:center;
-		color:black;
-		padding: 8px 16px;
-		text-decoration:none;/*去掉下划线*/
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.pagination li a.active{
-		background-color:#99CC99;
-		color:white;
-	}
-	.pagination li a:hover:not(.active){
-		background-color: #99CCCC;
-	}
-	#page{
-		text-align:center;
-		position:relative;
-		top:20px;
-	}
-	form{
-		display:inline;
-	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	#text{
-		height:28px;
-		text-align:center;
-		font-size:16px;
 	}
 	.hidden{
 		display:none;
 	}
-	.history{
-		position:absolute;
-		right:10px;
-		bottom:10px;
-	}
 </style>
-<script type="text/javascript">
-	var clickedRow;
-	function trclick(obj){
-		if(clickedRow != null){
-			clickedRow.style.background="#F8F8F8";
-		}
-		obj.style.background="#D8D8D8";
-		clickedRow = obj;
-		var cardnum = clickedRow.cells[4].innerText;
-		window.location.href="../SelectReaderServlet?strkey="+cardnum;
-	}
-	function trhover(obj){
-		if(obj != clickedRow){
-			obj.style.background="#F0F0F0";
-		}
-	}
-	function trout(obj){
-		if(obj != clickedRow){
-			obj.style.background="#F8F8F8";
-		}
-	}
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
-	function renovate(){
-		self.location.reload();
-	}
-	
-</script>
 </head>
 <body >
 
@@ -288,7 +177,7 @@
 			}
 		</script>
 	</div>
-	<div class="history">
+	<div class="buttons">
 		<button class="button" onclick="goBack()">返回</button> 
 		<button class="button" onclick="goForward()">前进</button>
 		<button class="button" onclick="renovate()">刷新</button>

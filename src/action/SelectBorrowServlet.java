@@ -2,6 +2,7 @@ package action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import model.BookBean;
 import model.BorrowBean;
 import model.ReaderBean;
+import service.BookService;
 import service.BorrowService;
 import service.ReaderService;
 
@@ -59,22 +62,26 @@ public class SelectBorrowServlet extends HttpServlet {
 					while(i.hasNext()){
 						HashMap m=new HashMap();
 						BorrowBean bean=(BorrowBean)i.next();
-						m.put("bookNum", bean.getBookNum());
-						m.put("bookName", bean.getBookName());
-						m.put("borrowDate", bean.getBorrowDate().toString());
-						addDate.setTime(bean.getBorrowDate());
-						addDate.add(Calendar.MONTH, 1);
-						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-						String tempDate = dateFormat.format(addDate.getTime());
-						m.put("shouldDate", tempDate);
-						list.add(m);
+						//未归还的借阅记录放入json数据中
+						if(bean.getFlag() == 0){
+							m.put("bid", bean.getBid());
+							m.put("bookNum", bean.getBookNum());
+							m.put("bookName", bean.getBookName());
+							m.put("borrowDate", bean.getBorrowDate().toString());
+							addDate.setTime(bean.getBorrowDate());
+							addDate.add(Calendar.MONTH, 1);
+							SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+							String tempDate = dateFormat.format(addDate.getTime());
+							m.put("shouldDate", tempDate);
+							list.add(m);
+						}
 					}
 					String readerJson=gson.toJson(hm);
-					System.out.println(readerJson);
+					//System.out.println(readerJson);
 					out.print(readerJson);
 				}else {
 					String readerJson=gson.toJson(rBean);
-					System.out.println("zheli"+readerJson);
+					//System.out.println("zheli"+readerJson);
 					out.print(readerJson);
 				}
 			}else {
@@ -82,7 +89,21 @@ public class SelectBorrowServlet extends HttpServlet {
 			}
 		}
 		if (bookNum != null) {
-			out.print("图书模块还没写");
+			BookService bService = new BookService();
+			try {
+				ArrayList<BookBean> bList = bService.findBookbynum(bookNum);
+				if(bList.size() == 0){
+					out.print(0);
+				}else {
+					Gson gson=new Gson();
+					BookBean bookBean = new BookBean();
+					bookBean = bList.get(0);
+					String bookJson=gson.toJson(bookBean);
+					out.print(bookJson);
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		}
 		out.flush();
 		out.close();

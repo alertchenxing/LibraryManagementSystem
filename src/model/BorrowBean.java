@@ -4,11 +4,22 @@ import java.util.Date;
 
 public class BorrowBean {
 	String readerId, readerName, bookNum, bookName,adminName, booktype;
-	
 	Date borrowDate, backDate;
-	int flag, readerbooknum;
-	float fine,deposit;
+	int flag, readerbooknum,message,bid;
+	float deposit;
 	
+	public int getMessage() {
+		return message;
+	}
+	public int getBid() {
+		return bid;
+	}
+	public void setBid(int bid) {
+		this.bid = bid;
+	}
+	public void setMessage(int message) {
+		this.message = message;
+	}
 	public int getReaderbooknum() {
 		return readerbooknum;
 	}
@@ -62,12 +73,6 @@ public class BorrowBean {
 	}
 	public void setFlag(int flag) {
 		this.flag = flag;
-	}
-	public float getFine() {
-		return fine;
-	}
-	public void setFine(float fine) {
-		this.fine = fine;
 	}
 	public float getDeposit() {
 		return deposit;

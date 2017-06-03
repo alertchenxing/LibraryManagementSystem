@@ -149,7 +149,7 @@ function logOut(){
 	}
 	.submenu{
 		display:none;
-		background:#444359;
+		background:#D8D8D8;
 		font-size:14px;
 	}
 	.submenu li{
@@ -165,7 +165,7 @@ function logOut(){
  		transition: all 0.25s ease;
 	}
 	.submenu a:hover{
-		background:#b63b4d;
+		background:#C0C0C0;
 		color: #FFF;
 	}
 	iframe{
@@ -236,14 +236,14 @@ function logOut(){
 					<ul class="submenu">
 						<li><a href="../ShowBookServlet" target="main">信息显示</a></li>
 						<li><a href="../BookManager/addNewBook.jsp" target="main">图书添加</a></li>
-						<li><a href="../BookManager/selectBook.jsp" target="main">图书查询TIANJIAHAHA</a></li>
+						<li><a href="../BookManager/selectBook.jsp" target="main">图书查询</a></li>
 					</ul>
 				</li>
 				<li>
 					<div class="link">图书借阅管理<i class="fa fa-chevron-down"></i></div>
 					<ul class="submenu">
 						<li><a href="../BorrowManager/borrow.jsp" target="main">图书借阅</a></li>
-						<li><a href="#">图书归还</a></li>
+						<li><a href="../BorrowManager/selectborrow.jsp" target="main">借阅查询</a></li>
 					</ul>
 				</li>
 				<li>
@@ -256,8 +256,9 @@ function logOut(){
 				<li>
 					<div class="link">账户管理<i class="fa fa-chevron-down"></i></div>
 					<ul class="submenu">
-						<li><a href="#">修改密码</a></li>
-						<li><a href="#">用户添加</a></li>
+						<li><a href="../StudentManager/updateadmin.jsp" target="main">修改密码</a></li>
+						<li><a href="addadmin.jsp" target="main">用户添加</a></li>
+						<li><a href="update.jsp" target="main">修改用户</a></li>
 					</ul>
 				</li>
 			</ul>

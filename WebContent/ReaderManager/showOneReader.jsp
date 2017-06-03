@@ -1,3 +1,4 @@
+<%@page import="model.AdminBean"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page  import="java.util.*" %>
@@ -8,37 +9,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>读者信息显示</title>
 <script src="../jquery/jquery-3.2.0.js"></script>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/infoadd.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
 	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
 		text-align:center;
 	}
 	.info-form{
 		position:relative;
 		text-align:left;
-	}
-	p{
-		padding: 10px 10px 10px 60px;
-	}
-	input, select{
-		font-size:16px;	
-		padding: 4px 8px;
-	}
-	h1{
-		background-color:#99CC99;
-		font-size: 25px;
-		text-align:left;
-		padding: 10px 0px 10px 60px;
-		display: block;
-		border-bottom:1px solid #89AF4C;
-		color: #FFF;
 	}
 	.info1, .info2{
 		position:relative;
@@ -55,29 +35,16 @@
 		max-width:800px;
 		max-height:390px;
 	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
 	.buttons{
 		position:fixed;
 		right:10px;
 		bottom:10px;
 	}
-	span{
-		font-size: 14px;
-		color: #FFF;
-	}
 	.message, .message1{
 		color:red;
+	}
+	.hidden{
+		display:none;
 	}
 </style>
 <script type="text/javascript">
@@ -194,12 +161,6 @@
 			return false;
 		}
 	}
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
 </script>
 </head>
 <body>
@@ -212,6 +173,14 @@
 	ReaderBean rBean = new ReaderBean();
 	for(int i = 0; i < rList.size(); i++){
 		rBean = (ReaderBean)rList.get(i);
+	}
+	ArrayList<AdminBean> loginrList = new ArrayList<>();
+	loginrList = (ArrayList)session.getAttribute("login");
+	AdminBean aBean = new AdminBean();
+	int flag = 0;
+	for(int i = 0; i < loginrList.size(); i++){
+		aBean = (AdminBean)loginrList.get(i);
+		flag = aBean.getFlag();
 	}
 %>
 <div class="box">
@@ -255,12 +224,23 @@
 		<%} %></div>
 		<p><label for="photopath">照片：</label><input type="file" name="photopath" id="photopath" accept="image/png,image/jpeg,image/gif" onchange="showPreview(this)"></p>
 		<div id="large"></div>
-		<p><label for="maxnum">最大借书量：</label><input type="text" name="maxnum" id="maxnum" maxlength='2' align="right" size="5"value="<%=rBean.getMaxNum() %>">本</p>
-		<p><label for="money">押金：</label><input type="text" name="money" id="money" value="<%=rBean.getMoney() %>" size="5">元</p>
+		<%
+			if(flag == 1){%>
+				<p><label for="maxnum">最大借书量：</label><input type="text" name="maxnum" id="maxnum" maxlength='2' align="right" size="5"value="<%=rBean.getMaxNum() %>">本</p>
+				<p><label for="money">押金：</label><input type="text" name="money" id="money" value="<%=rBean.getMoney() %>" size="5">元</p>
+			<%}else{%>
+			<p><label for="maxnum">最大借书量：</label><input type="text" name="maxnum" id="maxnum" maxlength='2' align="right" size="5"value="<%=rBean.getMaxNum() %>" readonly="readonly">本</p>
+			<p class="hidden"><label for="money">押金：</label><input type="text" name="money" id="money" value="<%=rBean.getMoney() %>" size="5" >元</p>
+		<%}
+		%>
 		</div>
 		<div class="buttons">
 		<input class="button" type="submit" value="修改" name="sub">
-		<input class="button" type="submit" value="删除" name="sub">
+		<%
+			if(flag == 1){%>
+				<input class="button" type="submit" value="删除" name="sub">
+			<%}
+		%>
 		<button class="button" onclick="goBack()">返回</button> 
 		</div>
 		</div>

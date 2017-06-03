@@ -5,24 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>没有任何信息</title>
-<style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F0F0F0;
-	}
-	.warn{
-		position:absolute;
-		font-size:20px;
-		margin-left:100px;
-		margin-top:50px;
-	}
-</style>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="box"><div class="warn">没有任何信息！

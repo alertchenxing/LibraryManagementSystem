@@ -6,37 +6,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>添加读者信息</title>
 <script src="../jquery/jquery-3.2.0.js"></script>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/infoadd.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
-		text-align:center;
-	}
 	.info-form{
 		position:relative;
 		text-align:left;
-	}
-	p{
-		padding: 10px 10px 10px 60px;
-	}
-	input, select{
-		font-size:16px;	
-		padding: 4px 8px;
-	}
-	h1{
-		background-color:#99CC99;
-		font-size: 25px;
-		text-align:left;
-		padding: 10px 0px 10px 60px;
-		display: block;
-		border-bottom:1px solid #89AF4C;
-		color: #FFF;
 	}
 	.info1, .info2{
 		position:relative;
@@ -52,27 +28,6 @@
 	#mouseimg{
 		max-width:800px;
 		max-height:390px;
-	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	.buttons{
-		position:absolute;
-		right:10px;
-		bottom:10px;
-	}
-	span{
-		font-size: 14px;
-		color: #FFF;
 	}
 	.message, .message1{
 		color:red;
@@ -235,15 +190,6 @@
 		  }
 		xmlhttp.open("GET","../AddReaderServlet?cardnum="+cardnum,true);
 		xmlhttp.send();
-	}
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
-	function renovate(){
-		self.location.reload();
 	}
 </script>
 </head>

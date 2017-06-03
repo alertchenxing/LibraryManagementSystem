@@ -5,23 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>请重新登录</title>
-<style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F0F0F0;
-	}
-	.warn{
-		position:absolute;
-		font-size:20px;
-		margin:40px;
-	}
-</style>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="box"><div class="warn">请求间隔时间过长，会话失效！<a href="login.jsp" target="_top">点击此处</a>重新登录

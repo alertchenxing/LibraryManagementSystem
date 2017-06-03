@@ -5,29 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>操作成功</title>
-<style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
-	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F0F0F0;
-	}
-	.warn{
-		position:absolute;
-		font-size:20px;
-		margin:40px;
-	}
-</style>
-<script>
-function goBack(){
-	window.history.back();
-	self.location.reload();
-}
-</script>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 </head>
 <body>
 <div class="box"><div class="warn">操作成功！<a href="" onclick="goBack()" >点击此处</a>返回上一级
