@@ -104,7 +104,6 @@ public class AdminDao {
 		boolean flag = false;
 		conn = DBConnection.getConnection();
 		String sql = "update tb_admin set password='"+password+"',flag='"+flag1+"' where username='"+username+"'";
-		System.out.println(username+password);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			if (pstmt.executeUpdate() > 0) {
