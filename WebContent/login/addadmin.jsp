@@ -19,7 +19,7 @@
 <body>
 <div class="box">
 <br><br><br>
-<p>添加信息成功请设置密码</p>
+<p>添加用户</p>
 <script type="text/javascript">
 	function checkPassword(){
 		var password = document.getElementById("password").value;
