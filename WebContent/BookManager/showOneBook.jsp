@@ -1,44 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page  import="java.util.*" %>
-<%@ page  import="model.BookBean" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>图书信息显示</title>
+<title>显示图书信息</title>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/infoadd.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 <script src="../jquery/jquery-3.2.0.js"></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
 	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
 		text-align:center;
 	}
 	.info-form{
-		position:relative;
 		text-align:left;
-	}
-	p{
-		padding: 10px 10px 10px 60px;
-	}
-	input, select{
-		font-size:16px;	
-		padding: 4px 8px;
-	}
-	h1{
-		background-color:#99CC99;
-		font-size: 25px;
-		text-align:left;
-		padding: 10px 0px 10px 60px;
-		display: block;
-		border-bottom:1px solid #89AF4C;
-		color: #FFF;
 	}
 	.info1, .info2{
 		position:relative;
@@ -55,26 +34,12 @@
 		max-width:800px;
 		max-height:390px;
 	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
+	.message, .message1{
+		color:red;
 	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	.buttons{
-		position:fixed;
-		right:10px;
-		bottom:10px;
-	}
-	span{
-		font-size: 14px;
-		color: #FFF;
+	a{
+		color:black;
+		text-decoration:none;/*去掉下划线*/
 	}
 </style>
 <script type="text/javascript">
@@ -97,11 +62,11 @@
             }  
         }catch(e){  
             if (node.files && node.files[0]) {  
-                var reader = new FileReader();  
-                reader.onload = function (e) {  
+                var book = new FileBook();  
+                book.onload = function (e) {  
                     imgURL = e.target.result;  
                 };  
-                reader.readAsDataURL(node.files[0]);  
+                book.bookAsDataURL(node.files[0]);  
             }  
         }  
         creatImg(imgRUL);  
@@ -125,54 +90,127 @@
 			la.hide();
 		});
 	});
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
-	function renovate(){
-		self.location.reload();
+	
+	//表单验证函数
+	function validateForm(){
+		var flag = 0;
+		var name = document.getElementById("bookname").value;
+		var writer = document.getElementById("bookwriter").value;
+		var publisher = document.getElementById("bookpublisher").value;
+		var num = document.getElementById("num").value;
+		var price = document.getElementById("price").value;
+		$("label.message").remove();
+		$("label.message1").remove();
+		if(name == null || name ==""){
+			$("p").eq(0).append("<label class='message'>请输入名称</label>");
+			flag++;
+		}
+		if(writer == null || writer ==""){
+			$("p").eq(2).append("<label class='message'>请输入作者</label>");
+			flag++;
+		}
+		if(publisher == null || publisher ==""){
+			$("p").eq(4).append("<label class='message'>请输入出版社</label>");
+			flag++;
+		}
+		if(num == null || num =="" || num == 0){
+			$("p").eq(8).append("<label class='message'>请输入库存</label>");
+			flag++;
+		}else if(isNaN(num)){
+			$("p").eq(8).append("<label class='message'>请输入数字</label>");
+			flag++;
+		}
+		if(price == null || price =="" || price == 0){
+			$("p").eq(7).append("<label class='message'>请输入单价</label>");
+			flag++;
+		}else if(isNaN(price)){
+			$("p").eq(7).append("<label class='message'>请输入数字</label>");
+			flag++;
+		}
+		if(flag != 0){
+			return false;
+		}
 	}
 </script>
 </head>
 <body>
-<%
-	ArrayList<BookBean> bList = new ArrayList<>();
-	bList = (ArrayList)session.getAttribute("bList1");
-	BookBean bBean = new BookBean();
-	for(int i = 0; i < bList.size(); i++){
-		bBean = (BookBean)bList.get(i);
-	}
-%>
+<c:forEach var="log" items="${login}" begin="${fn:length(login) - 1}" end="${fn:length(login) - 1}">
+	   <c:set var="flag" value="${log.flag}"></c:set>
+</c:forEach>
 <div class="box">
-<form action="" method="post" enctype="multipart/form-data"><div class="info-form">
-		<h1>请按要求输入图书 信息<span>(带*内容不能为空)</span></h1>
+<form id="addform" action="../UpdateBookServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><div class="info-form">
+		<h1>请按修改输入图书信息<span>(带*内容不能为空)</span></h1>
 		<div class="info1">
-		<p><label for="bookname">*图书名称：</label><input type="text" id="bookname" name="bookname" value="<%=bBean.getBookName() %>"></p>
-		<p><label for="booknumm">*编号：</label><input type="text" id="booknumm" name="booknumm" value="<%=bBean.getBookNumm() %>"></p>
-		<p><label for="bookwriter">*作者：</label><input type="text" name="bookwriter" id="bookwriter" value="<%=bBean.getBookWriter() %>"></p>
-		<p><label for="translator">*译者：</label><input type="text" name="translator" id="translator" value="<%=bBean.getBookTrans() %>"></p>
-		<p><label for="bookdate">*出版日期：</label><input type="text" name="bookdate" id="bookdate" value="<%=bBean.getBookDate() %>"></p>
-		<p><label for="publisher">*出版社：</label><input type="text" name="publisher" id="publisher" value="<%=bBean.getBookPublishr() %>"></p>
-		<p><label for="booktype">*图书类别：</label><input type="text" name="booktype" id="booktype" value="<%=bBean.getBookType() %>"></p>
+		<p><label for="booknum">*图书编号：</label><input type="text" id="booknum" name="booknum" value="${bookbean.bookNumm}" readonly="readonly"></p>
+		<p><label for="bookname">*图书名称：</label><input type="text" id="bookname" name="bookname" value="${bookbean.bookName}"></p>
+		<p><label for="booktype">*图书类别：</label><select name="booktype" id="booktype" size="1" >
+			<c:choose>
+				<c:when test="${bookbean.bookType eq '其他类'}">
+					<option value="其他类" selected>其他类</option>
+				</c:when>
+				<c:otherwise>
+					<option value="其他类">其他类</option>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${bookbean.bookType eq '计算机类'}">
+					<option value="计算机类" selected>计算机类</option>
+				</c:when>
+				<c:otherwise>
+					<option value="计算机类">其他类</option>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${bookbean.bookType eq '数学类'}">
+					<option value="数学类" selected>数学类</option>
+				</c:when>
+				<c:otherwise>
+					<option value="数学类">数学类</option>
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${bookbean.bookType eq '文学类'}">
+					<option value="文学类" selected>文学类</option>
+				</c:when>
+				<c:otherwise>
+					<option value="文学类">文学类</option>
+				</c:otherwise>
+			</c:choose>
+		</select></p>
+		<p><label for="bookwriter">*作&nbsp;&nbsp;者：</label><input type="text" name="bookwriter" id="bookwriter" value="${bookbean.bookWriter}"></p>
+		<p><label for="booktranslator"> 译  &nbsp; 者：</label><input type="text" name="booktranslator" id="booktranslator" value="${bookbean.bookTrans}"></p>
+		<p><label for="bookpublisher">*出 版 社：</label><input type="text" name="bookpublisher" id="bookpublisher" value="${bookbean.bookPublishr}"></p>
+		<p><label for="bookdate">出版日期：</label><input type="date" name="bookdate" id="bookdate" value="${bookbean.bookDate}"></p>
 		</div>
 		<div class="info2">
 		<div id="previewImg">
-		<%if(bBean.getBookphoto()==null){%>
-			<img src="../image/moren.jpg" width="120px" height="140px" />
-		<%}else{%>
-			<img src="<%=bBean.getBookphoto() %>" width="120px" height="140px" />
-		<%} %></div>
-		<p><label for="photopath">照片：</label><input type="file" name="photopath" id="photopath" accept="image/png,image/jpeg,image/gif" onchange="showPreview(this)"></p>
+		<c:choose>
+				<c:when test="${bookbean.bookphoto==null}">
+					<img src="../image/tushutubiao.jpg" width="120px" height="140px" />
+				</c:when>
+				<c:otherwise>
+					<img src="${bookbean.bookphoto}" width="120px" height="140px" />
+					<input class="hidden" type="text" name="photopath" value="${bookbean.bookphoto}">
+				</c:otherwise>
+		</c:choose>
+		</div>
+		<p><label for="photo">照片：</label><input type="file" name="photo" id="photo" accept="image/png,image/jpeg,image/gif" onchange="showPreview(this)"></p>
 		<div id="large"></div>
-		<p><label for="maxnum">在借数量：</label><input type="text" name="maxnum" id="maxnum" maxlength='2' value="<%=bBean.getNumb() %>">本</p>
-		<p><label for="money">押金：</label><input type="text" name="money" id="money" value="<%=bBean.getBookPrice() %>">元</p>
-		<p><label for="B_num">在借数量：</label><input type="text" name="B_num" id="B_num" maxlength='2' value="<%=bBean.getB_numb() %>">本</p>
+		<p><label for="price">*单价：</label><input type="text" name="price" id="price" size='5' value="${bookbean.bookPrice}">元</p>
+		<p><label for="bnum">在借数量：</label><input type="text" name="bnum" id="bnum" maxlength='2' size='5' value="${bookbean.b_numb}" readonly="readonly">本<label for="num"> *库存：</label><input type="text" name="num" id="num" maxlength='2' size='5' value="${bookbean.numb}">本</p>
 		</div>
 		<div class="buttons">
-		<input class="button" type="submit" value="修改">
-		<input class="button" type="submit" value="删除">
+		<c:choose>
+				<c:when test="${flag==1}">
+					<input class="button" type="submit" value="修改" name="submit">
+					<input class="button" type="submit" value="删除" name="submit">
+					<a class="button" href="../BorrowManager/borrow.jsp?booknum=${bookbean.bookNumm}">借阅</a>
+				</c:when>
+				<c:otherwise>
+					<a class="button" href="../BorrowManager/borrow.jsp?booknum=${bookbean.bookNumm}">借阅</a>
+				</c:otherwise>
+		</c:choose>
+		<input class="button" type="reset" value="取消">
 		<button class="button" onclick="goBack()">返回</button> 
 		<button class="button" onclick="goForward()">前进</button>
 		<button class="button" onclick="renovate()">刷新</button>

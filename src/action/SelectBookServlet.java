@@ -27,28 +27,32 @@ public class SelectBookServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
-		PrintWriter out = response.getWriter();
-		String strkey = request.getParameter("strkey");
 		HttpSession session = request.getSession();
-		ArrayList login = (ArrayList)session.getAttribute("login");
-		int flag = 1;
-		if (login == null || login.size() == 0) {
-			response.sendRedirect("login/warn.jsp");
-			return;
+		String strsearchtype = request.getParameter("strsearchtype");
+		String strkey = request.getParameter("strkey");
+		ArrayList<BookBean> booksArrayList = new ArrayList<>();
+		BookService bService = new BookService();
+		if (strsearchtype.equals("allstr")) {
+			booksArrayList = bService.selectByallkey(strkey);
+		}else if (strsearchtype.equals("bookname")){
+			booksArrayList = bService.selectBynamekey(strkey);
+		}else if (strsearchtype.equals("author")){
+			booksArrayList = bService.selectBywriterkey(strkey);
+		}else if (strsearchtype.equals("trans")){
+			booksArrayList = bService.selectBytranslatorkey(strkey);
+		}else if (strsearchtype.equals("booknum")){
+			booksArrayList = bService.selectBybooknumkey(strkey);
+		}else if (strsearchtype.equals("bookpublisher")){
+			booksArrayList = bService.selectBypublisherkey(strkey);
+		}else if (strsearchtype.equals("type")){
+			booksArrayList = bService.selectBybooktypekey(strkey);
 		}
-		ArrayList<BookBean> bList1 = new ArrayList<>();
-		bList1 = bService.findbook(strkey);
-		if(bList1 == null || bList1.size() == 0){
-			response.sendRedirect("login/message.jsp");
-			return;
-		}else if(bList1.size() == 1){
-			session.setAttribute("bList1", bList1);
-			response.sendRedirect("BookManager/showOneBook.jsp");
+		if (booksArrayList == null || booksArrayList.size() == 0) {
+			response.sendRedirect("BookManager/message.jsp");
 			return;
 		}else {
-			session.setAttribute("bList1", bList1);
-			session.setAttribute("flag", flag);
-			response.sendRedirect("BookManager/showBook.jsp");
+			session.setAttribute("booksArrayList", booksArrayList);
+			response.sendRedirect("BookManager/showbooksbytable.jsp");
 			return;
 		}
 	}

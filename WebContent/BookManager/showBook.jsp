@@ -8,146 +8,67 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>书籍信息显示</title>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/fenye.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
+<script src="../jquery/table.js" ></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
 	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
-	}
-	table{
-		border-collapse:collapse;/*合并边框*/
-		width:100%;
-	}
-	th{
-		background-color:#99CC99;
-		height:40px;
-		
-	}
-	td, th{
 		text-align:center;
-		border:1px solid #99CC66;
-		width:20%;
-	}
-	td{
-		height:30px;
-	}
-	.tel{
-		width:40%;
-	}
-	.pagination{
-		display:inline-block;
-	}
-	#info{
-		padding: 8px 16px;
-		background-color:#F0F0F0;
-	}
-	.pagination li{
-		display:inline;
-	}
-	.pagination li a{
-		text-align:center;
-		color:black;
-		padding: 8px 16px;
-		text-decoration:none;/*去掉下划线*/
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.pagination li a.active{
-		background-color:#99CC99;
-		color:white;
-	}
-	.pagination li a:hover:not(.active){
-		background-color: #99CCCC;
 	}
 	#page{
+		clear:both;
 		text-align:center;
 		position:relative;
-		top:20px;
+		top:30px;
 	}
-	form{
-		display:inline;
-	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	#text{
-		height:28px;
+	#setpage{
 		text-align:center;
-		font-size:16px;
 	}
-	.hidden{
-		display:none;
+	div.showbook{
+		position:relative;
+		top:10px;
+		text-align:center;
+		display:block;
+		width:100%;
 	}
-	.history{
-		position:absolute;
-		right:10px;
-		bottom:10px;
+	div.img {
+	    margin: 5px;
+	    border: 1px solid #ccc;
+	    float: left;
+	    width: 173px;
 	}
-</style>
-<script type="text/javascript">
-	var clickedRow;
-	function trclick(obj){
-		if(clickedRow != null){
-			clickedRow.style.background="#F8F8F8";
-		}
-		obj.style.background="#D8D8D8";
-		clickedRow = obj;
-		var numd = clickedRow.cells[4].innerText;
-		window.location.href="../SelectBookServlet?strkey="+numd;
-	}
-	function trhover(obj){
-		if(obj != clickedRow){
-			obj.style.background="#F0F0F0";
-		}
-	}
-	function trout(obj){
-		if(obj != clickedRow){
-			obj.style.background="#F8F8F8";
-		}
-	}
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
-	function renovate(){
-		self.location.reload();
+	div.img:hover {
+	    border: 1px solid #777;
 	}
 	
-</script>
+	div.img{
+		width: 173px;
+		height: 265px;
+	}
+	img {
+	    width: 173px;
+	    height: 195px;
+	}
+	
+	div.desc {
+	    padding: 15px;
+	    text-align: center;
+	    width: 143px;
+	    height: 70px;
+	}
+</style>
 </head>
 <body >
-
 	<%
-		int flag1 = (int)session.getAttribute("flag");
 		ArrayList<BookBean> bList = new ArrayList<>();
-		if(flag1 == 2){
-			bList = (ArrayList)session.getAttribute("bList");
-		}else if(flag1 == 1){
-			bList = (ArrayList)session.getAttribute("bList1");
-		}
+		bList = (ArrayList)session.getAttribute("bookList");
 		if (bList == null || bList.size() == 0) {
 			response.sendRedirect("../login/message.jsp");
 		}else {
 	%>
 <div class="box">
-	<div class="showtb">
+	<div class="showbook">
 	<%
 			int intPageSize;//一页显示的记录数量
 			int intRowCount;//记录总数
@@ -155,7 +76,7 @@
 			int intPage;//待显示页码
 			String strPage;
 			int i;
-			intPageSize = 2;//每页显示八条数据
+			intPageSize = 5;//每页显示两条数据
 			strPage = request.getParameter("page");
 			if(strPage == null){
 				intPage = 1;//显示第一页
@@ -176,17 +97,14 @@
 				while(i < temp + intPageSize && i < bList.size()){
 					BookBean bBean = (BookBean)bList.get(i);
 	%>
-					<tr onclick="trclick(this)" onmouseover="trhover(this)" onmouseout="trout(this)">
-							<div class="responsive">
- 			 <div class="img">
-   				 <a target="_blank" href="bBean.getBookPhoto">
-  				    <img src="bBean.getBookPhoto" alt="图片文本描述" width="300" height="200">
- 			  </a>
- 			   <div class="desc"><%=bBean.getBookName() %></div>
- 		 	</div>
-			</div>
-							
-					</tr>
+					<div class="responsive">
+					  <div class="img">
+					    <a href="../SelectOneBookServlet?booknum=<%=bBean.getBookNumm() %>">
+					      <img src="<%=bBean.getBookphoto()%>" alt="<%=bBean.getBookName()%>">
+					    </a>
+					    <div class="desc"><%=bBean.getBookName()%></div>
+					  </div>
+					</div>		
 	<%
 					i++;
 				}
@@ -198,8 +116,9 @@
 				}
 			}
 	%>
-		<div id="page">
-		</div>
+	</div>
+	<div id="page">
+	</div>
 		<script type="text/javascript">
 			var totalpage, pagesize, cpage,count, outstr;
 			//初始化
@@ -215,7 +134,7 @@
 				if(toltalpage <= pagesize){//如果总页数小于等于10页
 					for(count = 1; count <= toltalpage; count ++){
 						if(count != cpage){//跳转页数不等于当前页数
-							outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
+							outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
 						}else{
 							outstr = outstr + "<li><a class='active'>"+count+"</a></li>";
 						}
@@ -225,34 +144,34 @@
 					if(parseInt((cpage - 1) / pagesize) == 0){//小于10页显示
 						for(count = 1; count <= pagesize; count ++){
 							if(count != cpage){//跳转页数不等于当前页数
-								outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
+								outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
 							}else{
 								outstr = outstr + "<li><a class='active'>"+count+"</a></li>";
 							}
 						}
-						outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>>></a></li>";
+						outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>>></a></li>";
 					}else if(parseInt((cpage - 1) / pagesize) == parseInt(toltalpage/ pagesize)){//最后几页显示
-						outstr = outstr + "<li><a href='showReaders.jsp?page="+(parseInt((cpage - 1) / 10) * 10)+"' onclick='gotopage("+(parseInt((cpage - 1) / 10) * 10)+")'><<</a></li>";
+						outstr = outstr + "<li><a href='showBook.jsp?page="+(parseInt((cpage - 1) / 10) * 10)+"' onclick='gotopage("+(parseInt((cpage - 1) / 10) * 10)+")'><<</a></li>";
 						for(count = parseInt(toltalpage/ pagesize) * pagesize + 1; count <= toltalpage; count ++){
 							if(count != cpage){//跳转页数不等于当前页数
-								outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
+								outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
 							}else{
 								outstr = outstr + "<li><a class='active'>"+count+"</a></li>";
 							}
 						}
 					}else{
-						outstr = outstr + "<li><a href='showReaders.jsp?page="+(parseInt((cpage - 1) / pagesize) * pagesize)+"' onclick='gotopage("+(parseInt((cpage - 1) / pagesize) * pagesize)+")'><<</a></li>";
+						outstr = outstr + "<li><a href='showBook.jsp?page="+(parseInt((cpage - 1) / pagesize) * pagesize)+"' onclick='gotopage("+(parseInt((cpage - 1) / pagesize) * pagesize)+")'><<</a></li>";
 						for(count = parseInt((cpage - 1) / pagesize) * pagesize + 1; count <= parseInt((cpage - 1) / pagesize) * pagesize + pagesize; count ++){//中间页数的显示
 							if(count != cpage){//跳转页数不等于当前页数
-								outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
+								outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>"+count+"</a></li>";
 							}else{
 								outstr = outstr + "<li><a class='active'>"+count+"</a></li>";
 							}
 						}
-						outstr = outstr + "<li><a href='showReaders.jsp?page="+count+"' onclick='gotopage("+count+")'>>></a></li>";
+						outstr = outstr + "<li><a href='showBook.jsp?page="+count+"' onclick='gotopage("+count+")'>>></a></li>";
 					}
 				}
-				document.getElementById("page").innerHTML = "<div id='setpage'><span id='info'>共"+toltalpage+"页|第"+cpage+"页</span><ul class='pagination'>"+outstr+"</ul><form action='showReaders.jsp' method='get'"+
+				document.getElementById("page").innerHTML = "<div id='setpage'><span id='info'>共"+toltalpage+"页|第"+cpage+"页</span><ul class='pagination'>"+outstr+"</ul><form action='showBook.jsp' method='get'"+
 				"onsubmit='return checkpage()'><span id='info'>到第</span><input name='page'"+
 				"type='text' size='4' id='text' maxlength='4' required><span id='info'>页</span><input class='button' type='submit' value='确定'></form></div>";
 				outstr="";
@@ -273,8 +192,7 @@
 				}
 			}
 		</script>
-	</div>
-	<div class="history">
+	<div class="buttons">
 		<button class="button" onclick="goBack()">返回</button> 
 		<button class="button" onclick="goForward()">前进</button>
 		<button class="button" onclick="renovate()">刷新</button>

@@ -90,19 +90,14 @@ public class SelectBorrowServlet extends HttpServlet {
 		}
 		if (bookNum != null) {
 			BookService bService = new BookService();
-			try {
-				ArrayList<BookBean> bList = bService.findBookbynum(bookNum);
-				if(bList.size() == 0){
-					out.print(0);
-				}else {
-					Gson gson=new Gson();
-					BookBean bookBean = new BookBean();
-					bookBean = bList.get(0);
-					String bookJson=gson.toJson(bookBean);
-					out.print(bookJson);
-				}
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			BookBean bookBean = new BookBean();
+			bookBean = bService.findBookbynum(bookNum);
+			if(bookBean.getBookNumm() == null){
+				out.print(0);
+			}else {
+				Gson gson=new Gson();
+				String bookJson=gson.toJson(bookBean);
+				out.print(bookJson);
 			}
 		}
 		out.flush();

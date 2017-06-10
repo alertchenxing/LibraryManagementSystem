@@ -96,7 +96,7 @@ function logOut(){
 	}
 	.content{
 		position:absolute;
-		height:400px;
+		height:420px;
 		margin-left:26%;
 		margin-top:10px;
 		width:69%;
@@ -216,7 +216,7 @@ function logOut(){
 <div class="container">
 	<div class="top"><div class="header">
 		<ul>
-			<li><a href="#"><%=username%>已登录</a></li>
+			<li><a href="../StudentManager/updateadmin.jsp" target="main"><%=username%>已登录</a></li>
 			<li><a href="#" onclick="logOut()">退出登陆</a></li>
 		</ul>
 	</div></div>
@@ -236,7 +236,7 @@ function logOut(){
 					<ul class="submenu">
 						<li><a href="../ShowBookServlet" target="main">信息显示</a></li>
 						<li><a href="../BookManager/addNewBook.jsp" target="main">图书添加</a></li>
-						<li><a href="../BookManager/selectBook.jsp" target="main">图书查询</a></li>
+						<li><a href="../BookManager/selectBook.jsp" target="main">图书检索</a></li>
 					</ul>
 				</li>
 				<li>

@@ -27,6 +27,8 @@ public class AddReaderServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.setContentType("text/html;charset=UTF-8");
+		request.setCharacterEncoding("utf-8");
 		SmartUpload su = new SmartUpload();
 		//初始化对象
 		su.initialize(getServletConfig(), request, response);
@@ -35,7 +37,7 @@ public class AddReaderServlet extends HttpServlet {
 		//设置所有文件的大小
 		su.setTotalMaxFileSize(1024*1024*100);
 		//设置允许上传文件类型
-		su.setAllowedFilesList("jpg,png,gif");
+		su.setAllowedFilesList("jpg,png,gif,PNG");
 		try {
 			//设置不允许上传的文件类型
 			su.setDeniedFilesList("rar,jsp,doc,exe,bat,htm,html,");
@@ -83,9 +85,6 @@ public class AddReaderServlet extends HttpServlet {
 			temp2 = "0";
 		}
 		float money = Float.parseFloat(temp2);
-		if (photopath==null) {
-			photopath = "none";
-		}
 		ReaderBean rBean = new ReaderBean();
 		rBean.setReaderName(name);
 		rBean.setReaderSex(sex);

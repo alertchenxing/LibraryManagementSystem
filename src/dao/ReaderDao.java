@@ -52,28 +52,53 @@ public class ReaderDao {
 	 */
 	public boolean doUpdate(ReaderBean rBean){
 		boolean flag = false;
-		conn = DBConnection.getConnection();
-		String sql = "update tb_reader set name=?,sex=?,age=?,tel=?,"+
-		"cardtype=?,maxnum=?,money=?,photopath=? where cardnum=?";
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, rBean.getReaderName());
-			pstmt.setString(2, rBean.getReaderSex());
-			pstmt.setInt(3, rBean.getReaderAge());
-			pstmt.setString(4, rBean.getReaderTel());
-			pstmt.setString(5, rBean.getCardType());
-			pstmt.setInt(6, rBean.getMaxNum());
-			pstmt.setFloat(7, rBean.getMoney());
-			pstmt.setString(8, rBean.getPhotoPath());
-			pstmt.setString(9, rBean.getCardNum());
-			if (pstmt.executeUpdate() > 0) {
-				flag = true;
+		if (rBean.getPhotoPath() != null) {
+			conn = DBConnection.getConnection();
+			String sql = "update tb_reader set name=?,sex=?,age=?,tel=?,"+
+			"cardtype=?,maxnum=?,money=?,photopath=? where cardnum=?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, rBean.getReaderName());
+				pstmt.setString(2, rBean.getReaderSex());
+				pstmt.setInt(3, rBean.getReaderAge());
+				pstmt.setString(4, rBean.getReaderTel());
+				pstmt.setString(5, rBean.getCardType());
+				pstmt.setInt(6, rBean.getMaxNum());
+				pstmt.setFloat(7, rBean.getMoney());
+				pstmt.setString(8, rBean.getPhotoPath());
+				pstmt.setString(9, rBean.getCardNum());
+				if (pstmt.executeUpdate() > 0) {
+					flag = true;
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				DBConnection.closeConnection(pstmt, conn);
 			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally {
-			DBConnection.closeConnection(pstmt, conn);
+		}else if(rBean.getPhotoPath() == null){
+			conn = DBConnection.getConnection();
+			String sql = "update tb_reader set name=?,sex=?,age=?,tel=?,"+
+			"cardtype=?,maxnum=?,money=? where cardnum=?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, rBean.getReaderName());
+				pstmt.setString(2, rBean.getReaderSex());
+				pstmt.setInt(3, rBean.getReaderAge());
+				pstmt.setString(4, rBean.getReaderTel());
+				pstmt.setString(5, rBean.getCardType());
+				pstmt.setInt(6, rBean.getMaxNum());
+				pstmt.setFloat(7, rBean.getMoney());
+				pstmt.setString(8, rBean.getCardNum());
+				if (pstmt.executeUpdate() > 0) {
+					flag = true;
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				DBConnection.closeConnection(pstmt, conn);
+			}
 		}
 		return flag;
 		

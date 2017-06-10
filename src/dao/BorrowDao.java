@@ -243,6 +243,11 @@ public class BorrowDao {
 		}
 		return borrowBean;
 	}
+	/**
+	 * 续借一本书
+	 * @param borrowBean包含借阅信息
+	 * @return 续借成功返回true续借失败返回false
+	 */
 	public boolean xujie(BorrowBean borrowBean) {
 		boolean flag = false;
 		conn = DBConnection.getConnection();
@@ -260,6 +265,29 @@ public class BorrowDao {
 		}
 		finally {
 			DBConnection.closeConnection(pstmt, conn);
+		}
+		return flag;
+	}
+	/**
+	 * 验证指定图书是否有借阅未归还
+	 * @param booknum指定图书编号
+	 * @return 存在返回true不存在返回false
+	 */
+	public boolean checkBorrowByBooknum(String booknum) {
+		boolean flag = false;
+		conn = DBConnection.getConnection();
+		String sql = "select * from tb_borrow where booknum='"+booknum+"' and flag='0'";
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				flag = true;
+				break;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBConnection.closeConnection(rs, pstmt, conn);
 		}
 		return flag;
 		

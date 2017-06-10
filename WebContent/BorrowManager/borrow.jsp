@@ -89,9 +89,9 @@
 		xmlhttp.onreadystatechange = readerDao;
 		sendUrl(url);
 	}
-	function showBook(obj){
+	function showBook(){
 			
-			var booknum = obj.value;
+			var booknum = document.getElementById("booknum").value;
 			if(booknum == ""){
 				return;
 			}
@@ -202,11 +202,14 @@
 	window.onload = function(){
 		clearContents();
 		showReader();
+		setTimeout(showBook,500);
 	}
 </script>
 </head>
 <body>
 <%
+	String booknum=null;
+	booknum = request.getParameter("booknum");
 	ArrayList<AdminBean> loginrList = new ArrayList<>();
 	loginrList = (ArrayList)session.getAttribute("login");
 	AdminBean aBean = new AdminBean();
@@ -233,7 +236,14 @@
 <p><label for="readername">读者姓名：</label><input name="readername" id="readername" type="text" readonly="readonly" onclick="selectReader(this)"></p>
 <p><label for="maxnum">可借数量：</label><input name="maxnum" id="maxnum" type="text" readonly="readonly"></p>
 <hr>
-<p><label for="booknum">图书编号：</label><input name="booknum" id="booknum" type="text" onchange="showBook(this)"></p>
+<%
+			if(booknum == null){%>
+				<p><label for="booknum">图书编号：</label><input name="booknum" id="booknum" type="text" onchange="showBook()"></p>
+			<%}else{%>
+			<p><label for="booknum">图书编号：</label><input name="booknum" id="booknum" type="text" onchange="showBook()" value="<%=booknum%>"></p>
+		<%}
+%>
+
 <p><label for="bookname">图书名称：</label><input name="bookname" id="bookname" type="text" readonly="readonly" onclick="selectBook(this)"></p>
 <p><label for="booktype">图书类别：</label><input name="booktype" id="booktype" type="text" readonly="readonly"></p>
 </div>

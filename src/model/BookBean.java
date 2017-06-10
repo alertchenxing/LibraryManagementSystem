@@ -1,15 +1,17 @@
 package model;
 
+import java.util.Date;
+
 public class BookBean {
-	String 	bookName;//姓名
+	String 	bookName;//名称
 	String  bookNumm;//编号
 	String  bookWriter;//作者
 	String  bookTrans;//译者
-	String  bookDate;//出版日期
+	Date  bookDate;//出版日期
 	String  bookPublishr;//出版社
 	String  bookType;//图书类别
 	float  bookPrice;//价格
-	int  numb;//图书数量
+	int  numb;//库存数量
 	String  bookphoto;//图书封面
 	int  b_numb;//已出借图书数量
 	public int getB_numb() {
@@ -42,10 +44,10 @@ public class BookBean {
 	public void setBookTrans(String bookTrans) {
 		this.bookTrans = bookTrans;
 	}
-	public String getBookDate() {
+	public Date getBookDate() {
 		return bookDate;
 	}
-	public void setBookDate(String bookDate) {
+	public void setBookDate(Date bookDate) {
 		this.bookDate = bookDate;
 	}
 	public String getBookPublishr() {

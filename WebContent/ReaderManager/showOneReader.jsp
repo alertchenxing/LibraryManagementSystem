@@ -38,7 +38,7 @@
 	.buttons{
 		position:fixed;
 		right:10px;
-		bottom:10px;
+		bottom:30px;
 	}
 	.message, .message1{
 		color:red;
@@ -185,7 +185,7 @@
 %>
 <div class="box">
 <form action="../UpdateReaderServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><div class="info-form">
-		<h1>请按要求输入读者信息<span>(带*内容不能为空)</span></h1>
+		<h1>请按要求修改读者信息<span>(带*内容不能为空)</span></h1>
 		<div class="info1">
 		<p><label for="readername">*姓名：</label><input type="text" id="readername" name="readername" value="<%=rBean.getReaderName() %>"></p>
 		<p><label for="readersex">*性别：</label>

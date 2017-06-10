@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +20,7 @@ import model.BookBean;
 import service.BookService;
 
 
-@WebServlet(asyncSupported = true, urlPatterns = { "/addBookServlet" })
+
 public class AddBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
@@ -27,6 +30,8 @@ public class AddBookServlet extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html;charset=UTF-8");
 		SmartUpload su = new SmartUpload();
 		//初始化对象
 		su.initialize(getServletConfig(), request, response);
@@ -35,7 +40,7 @@ public class AddBookServlet extends HttpServlet {
 		//设置所有文件的大小
 		su.setTotalMaxFileSize(1024*1024*100);
 		//设置允许上传文件类型
-		su.setAllowedFilesList("jpg,png,gif");
+		su.setAllowedFilesList("jpg,png,gif,PNG");
 		try {
 			//设置不允许上传的文件类型
 			su.setDeniedFilesList("rar,jsp,doc,exe,bat,htm,html,");
@@ -60,52 +65,40 @@ public class AddBookServlet extends HttpServlet {
 			photo = request.getContextPath()+"/image/"+filename;
 		}
 		BookService bService = new BookService();
-		String booknum = su.getRequest().getParameter("booknum");
-		System.out.println(booknum);
-		int result = bService.checkBookNum(booknum);
-		PrintWriter out = response.getWriter();
-		if (result == 0) {
-			out.print(0);
-		}else if(result == 1){
-			out.print(1);
-			return;
-		}
+		//接收参数
 		String name = su.getRequest().getParameter("bookname");
-		String bnum = su.getRequest().getParameter("booknum");
-		String writer=su.getRequest().getParameter("writer");
-		String trans = su.getRequest().getParameter("translator");
-		String bookdate	 = su.getRequest().getParameter("bdate");
-		String bpub = su.getRequest().getParameter("publisher");
+		String writer=su.getRequest().getParameter("bookwriter");
+		String trans = su.getRequest().getParameter("booktranslator");
+		String bookdate	 = su.getRequest().getParameter("bookdate");
+		String bpub = su.getRequest().getParameter("bookpublisher");
 		String booktype = su.getRequest().getParameter("booktype");
-		int b_num = Integer.parseInt(su.getRequest().getParameter("b_num"));
-		int numb = Integer.parseInt(su.getRequest().getParameter("numb"));
+		int num = Integer.parseInt(su.getRequest().getParameter("num"));
 		float price = Float.parseFloat(su.getRequest().getParameter("price"));
-		System.out.println(request.getContextPath()+"/image/"+filename);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			if(!bookdate.equals("")){
+				date = format.parse(bookdate);
+			}
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
 		BookBean bBean = new BookBean();
 		bBean.setBookName(name);
-		bBean.setBookNumm(bnum);
 		bBean.setBookWriter(writer);
 		bBean.setBookTrans(trans);
-		bBean.setBookDate(bookdate);
+		bBean.setBookDate(date);
 		bBean.setBookPublishr(bpub);
 		bBean.setBookType(booktype);
 		bBean.setBookPrice(price);
-		bBean.setNumb(numb);
+		bBean.setNumb(num);
 		bBean.setBookphoto(photo);
-		bBean.setB_numb(b_num);
-		try {
-			if (bService.addBook(bBean)) {
-				System.out.println("添加成功");
-			}else {
-				System.out.println("添加失败");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		boolean flag = bService.addBook(bBean);
+		if (flag) {
+			response.sendRedirect("ReaderManager/success.jsp");
+		}else {
+			response.sendRedirect("ReaderManager/fail.jsp");
 		}
-		out.flush();
-		out.close();
-		
 	}
 
 	

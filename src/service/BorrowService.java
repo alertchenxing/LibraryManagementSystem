@@ -43,7 +43,6 @@ public class BorrowService {
 	 * @return 修改成功返回TRUE失败返回FALSE
 	 */
 	public boolean alterBorrow(BorrowBean borrowBean) {
-		System.out.println("servce");
 		return bDao.doUpdate(borrowBean);
 	}
 	
@@ -73,7 +72,21 @@ public class BorrowService {
 	public BorrowBean selectOneBorrow(int bid){
 		return bDao.selectOneBorrow(bid);
 	}
+	/**
+	 * 续借一本书
+	 * @param borrowBean包含借阅信息
+	 * @return 续借成功返回true续借失败返回false
+	 */
 	public boolean xujie(BorrowBean borrowBean) {
 		return bDao.xujie(borrowBean);
+	}
+	/**
+	 * 验证指定图书是否有借阅未归还
+	 * @param booknum指定图书编号
+	 * @return 存在返回true不存在返回false
+	 */
+	public boolean checkBorrowByBooknum(String booknum) {
+		return bDao.checkBorrowByBooknum(booknum);
+		
 	}
 }

@@ -5,38 +5,16 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>添加图书信息</title>
+<link href="../css/maincss.css" rel="stylesheet" type="text/css">
+<link href="../css/infoadd.css" rel="stylesheet" type="text/css">
+<script src="../jquery/main.js"></script>
 <script src="../jquery/jquery-3.2.0.js"></script>
 <style type="text/css">
-	*{
-		margin: 0;
-		padding: 0;
-	}
 	.box{
-		position:relative;
-		height:400px;
-		width:100%;
-		background-color:#F8F8F8;
 		text-align:center;
 	}
 	.info-form{
-		position:relative;
 		text-align:left;
-	}
-	p{
-		padding: 10px 10px 10px 60px;
-	}
-	input, select{
-		font-size:16px;	
-		padding: 4px 8px;
-	}
-	h1{
-		background-color:#99CC99;
-		font-size: 25px;
-		text-align:left;
-		padding: 10px 0px 10px 60px;
-		display: block;
-		border-bottom:1px solid #89AF4C;
-		color: #FFF;
 	}
 	.info1, .info2{
 		position:relative;
@@ -53,26 +31,8 @@
 		max-width:800px;
 		max-height:390px;
 	}
-	.button{
-		padding: 8px 16px 7px 16px;
-		background-color:#99CC99;
-		border:0px;
-		font-size:15px;
-		transition:background-color .3s;/*颜色渐变*/
-		-webkit-transition:background-color .3s;
-		-o-transition:background-color .3s;
-	}
-	.button:hover{
-		background-color: #99CCCC;
-	}
-	.buttons{
-		position:fixed;
-		right:10px;
-		bottom:10px;
-	}
-	span{
-		font-size: 14px;
-		color: #FFF;
+	.message, .message1{
+		color:red;
 	}
 </style>
 <script type="text/javascript">
@@ -127,56 +87,68 @@
 	//表单验证函数
 	function validateForm(){
 		var flag = 0;
-		var bookname = document.getElementById("bookname").value;
-		var booknumm = document.getElementById("booknum").value;
-		var bookwriter = document.getElementById("writer").value;
-		var booktrans = document.getElementById("translator").value;
-		var bookdate = document.getElementById("bdate").value;
-		var bookpublisher = document.getElementById("publisher").value;
-		var booktype = document.getElementById("booktype").value;
-		var bookprice = document.getElementById("price").value;
-		var booknum = document.getElementById("num").value;
-		var bookphoto = document.getElementById("photo").value;
-		var b_num = document.getElementById("b_num").value;
+		var name = document.getElementById("bookname").value;
+		var writer = document.getElementById("bookwriter").value;
+		var publisher = document.getElementById("bookpublisher").value;
+		var num = document.getElementById("num").value;
+		var price = document.getElementById("price").value;
+		$("label.message").remove();
+		$("label.message1").remove();
 		if(name == null || name ==""){
-			$("p").eq(0).append("请填写图书名称");
+			$("p").eq(0).append("<label class='message'>请输入名称</label>");
+			flag++;
+		}
+		if(writer == null || writer ==""){
+			$("p").eq(2).append("<label class='message'>请输入作者</label>");
+			flag++;
+		}
+		if(publisher == null || publisher ==""){
+			$("p").eq(4).append("<label class='message'>请输入出版社</label>");
+			flag++;
+		}
+		if(num == null || num =="" || num == 0){
+			$("p").eq(8).append("<label class='message'>请输入库存</label>");
+			flag++;
+		}else if(isNaN(num)){
+			$("p").eq(8).append("<label class='message'>请输入数字</label>");
+			flag++;
+		}
+		if(price == null || price =="" || price == 0){
+			$("p").eq(7).append("<label class='message'>请输入单价</label>");
+			flag++;
+		}else if(isNaN(price)){
+			$("p").eq(7).append("<label class='message'>请输入数字</label>");
 			flag++;
 		}
 		if(flag != 0){
 			return false;
 		}
 	}
-	function goBack(){
-		window.history.back();
-	}
-	function goForward(){
-		window.history.forward();
-	}
-	function renovate(){
-		self.location.reload();
-	}
 </script>
 </head>
 <body>
 <div class="box">
-<form id="addform" action="../AddReaderServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><div class="info-form">
+<form id="addform" action="../AddBookServlet" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><div class="info-form">
 		<h1>请按要求输入图书信息<span>(带*内容不能为空)</span></h1>
 		<div class="info1">
-		<p><label for="bookname">*图书名称：</label><input type="text" id="bookname" name="bookname" required></p>
-		<p><label for="booknumm">*编号：</label><input id="booknumm" type="text" name="bookname" required></p>
-		<p><label for="bookwriter">*作者：</label><input type="text" name="bookwriter" id="bookwriter" required></p>
-		<p><label for="booktranslator">*译者：</label><input type="text" name="booktranslator" id="booktranslator" required></p>
-		<p><label for="bookdate">*出版日期：</label><input type="text" name="bookdate" id="bookdate" required></p>
-		<p><label for="bookpublisher">*出版社：</label><input type="text" name="bookpublisher" id="bookpublisher" required></p>
-		<p><label for="booktype">*图书类别：</label><input type="text" name="booktype" id="booktype" required></p>
+		<p><label for="bookname">*图书名称：</label><input type="text" id="bookname" name="bookname" ></p>
+		<p><label for="booktype">*图书类别：</label><select name="booktype" id="booktype" size="1" >
+			<option value="其他类">其他类</option>
+			<option value="计算机类">计算机类</option>
+			<option value="数学类">数学类</option>
+			<option value="文学类">文学类</option>
+		</select></p>
+		<p><label for="bookwriter">*作&nbsp;&nbsp;者：</label><input type="text" name="bookwriter" id="bookwriter" ></p>
+		<p><label for="booktranslator"> 译  &nbsp; 者：</label><input type="text" name="booktranslator" id="booktranslator"></p>
+		<p><label for="bookpublisher">*出 版 社：</label><input type="text" name="bookpublisher" id="bookpublisher" ></p>
+		<p><label for="bookdate">出版日期：</label><input type="date" name="bookdate" id="bookdate"></p>
 		</div>
 		<div class="info2">
-		<div id="previewImg"><img src="../image/moren.jpg" width="120px" height="140px" /></div>
+		<div id="previewImg"><img src="../image/tushutubiao.jpg" width="120px" height="140px" /></div>
 		<p><label for="photo">照片：</label><input type="file" name="photo" id="photo" accept="image/png,image/jpeg,image/gif" onchange="showPreview(this)"></p>
 		<div id="large"></div>
-		<p><label for="maxnum">图书总数量：</label><input type="text" name="maxnum" id="maxnum" maxlength='2'>本</p>
-		<p><label for="price">押金：</label><input type="text" name="price" id="price">元</p>
-		<p><label for="b_num">在借数量：</label><input type="text" name="b_num" id="b_num" maxlength='2'>本</p>
+		<p><label for="price">*单价：</label><input type="text" name="price" id="price" size='5'>元</p>
+		<p><label for="num">*库存：</label><input type="text" name="num" id="num" maxlength='2' size='5'>本</p>
 		</div>
 		<div class="buttons">
 		<input class="button" type="submit" value="添加">
